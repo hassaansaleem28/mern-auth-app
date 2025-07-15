@@ -41,7 +41,7 @@ function ResetPassword() {
     try {
       setIsLoading(true);
       const { data } = await axios.post(
-        backendUrl + "/api/auth/send-reset-OTP",
+        backendUrl + "/api/auth/send-reset-otp",
         { email }
       );
       data.success ? toast.success(data.message) : toast.error(data.message);

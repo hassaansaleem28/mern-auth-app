@@ -4,9 +4,12 @@ import { useContext } from "react";
 import { AppContext } from "../contexts/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useState } from "react";
 
 function NavBar() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const { userDataa, setIsloggedIn, backendUrl, setUserDataa } =
     useContext(AppContext);
 
@@ -24,17 +27,21 @@ function NavBar() {
 
   async function sendVerificationOtp() {
     try {
+      setIsLoading(true);
       axios.defaults.withCredentials = true;
       const { data } = await axios.post(
         backendUrl + "/api/auth/send-verify-otp"
       );
       if (data.success) {
+        setIsLoading(false);
         navigate("/verify-email");
         toast.success(data.message);
       } else {
+        setIsLoading(false);
         toast.error(data.message);
       }
     } catch (err) {
+      setIsLoading(false);
       toast.error(err.message);
     }
   }
@@ -52,7 +59,7 @@ function NavBar() {
                   onClick={sendVerificationOtp}
                   className="py-1 px-2 hover:bg-gray-200 cursor-pointer"
                 >
-                  Verify Email
+                  {isLoading ? "Wait..." : "Verify Email"}
                 </li>
               )}
 

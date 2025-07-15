@@ -4,9 +4,11 @@ import { useContext, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { AppContext } from "../contexts/AppContext";
 import axios from "axios";
+import { useState } from "react";
 
 function EmailVerify() {
   const inputRefs = useRef([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { backendUrl, isloggedIn, userDataa, getUserData } =
     useContext(AppContext);
   const navigate = useNavigate();
@@ -37,23 +39,27 @@ function EmailVerify() {
       e.preventDefault();
       const otpArray = inputRefs.current.map(e => e.value);
       const OTP = otpArray.join("");
+      setIsLoading(true);
 
       const { data } = await axios.post(
-        backendUrl + "/api/auth/verify-account",
+        backendUrl + "/api/auth/verify-email",
         {},
         {
           headers: { "x-otp": OTP, "Content-Type": "application/json" },
         }
       );
       if (data.success) {
+        setIsLoading(false);
         toast.success(data.message);
         getUserData();
         navigate("/");
       } else {
         toast.error(data.message);
+        setIsLoading(false);
       }
     } catch (err) {
       toast.error(err.message);
+      setIsLoading(false);
     }
   }
   useEffect(
@@ -97,7 +103,7 @@ function EmailVerify() {
             ))}
         </div>
         <button className="w-full py-3 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full cursor-pointer">
-          Verify email
+          {isLoading ? "Wait..." : "Verify email"}
         </button>
       </form>
     </div>
