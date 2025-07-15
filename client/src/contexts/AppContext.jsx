@@ -22,7 +22,6 @@ export function AppContextProvider({ children }) {
   async function getAuthState() {
     try {
       const { data } = await axios.get(backendUrl + "/api/auth/is-auth");
-      console.log(data);
       if (data.success) {
         setIsloggedIn(true);
         getUserData();

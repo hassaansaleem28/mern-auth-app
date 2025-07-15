@@ -128,7 +128,7 @@ export async function verifyEmail(req, res) {
     const user = await UserModel.findById(userId);
     if (!user) return res.json({ success: false, message: "User not found" });
     if (user.verifyotp === "" || user.verifyotp !== OTP)
-      return res.json({ success: "false", message: "Invalid OTP" });
+      return res.json({ success: false, message: "Invalid OTP" });
     if (user.verifyotpExpireAt < Date.now())
       return res.json({ success: false, message: "OTP expired!" });
 
