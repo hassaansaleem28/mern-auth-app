@@ -15,9 +15,10 @@ function Login() {
   const { backendUrl, setIsloggedIn, getUserData } = useContext(AppContext);
 
   async function handleSubmit(e) {
+    axios.defaults.withCredentials = true;
     try {
       e.preventDefault();
-      axios.defaults.withCredentials = true;
+
       if (state === "Sign Up") {
         setIsLoading(true);
         const { data } = await axios.post(backendUrl + "/api/auth/register", {
