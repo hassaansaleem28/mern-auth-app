@@ -25,7 +25,7 @@ export async function register(req, res) {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: none,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -63,7 +63,7 @@ export async function login(req, res) {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: none,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -78,7 +78,7 @@ export async function logout(req, res) {
     res.clearCookie("token", {
       httpOnly: true,
       secure: true,
-      sameSite: none,
+      sameSite: "none",
     });
     return res.json({ success: true, message: "Logged Out" });
   } catch (err) {
